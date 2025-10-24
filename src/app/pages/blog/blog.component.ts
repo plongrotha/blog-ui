@@ -2,6 +2,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  HostListener,
   inject,
   ViewChild,
 } from '@angular/core';
@@ -24,6 +25,9 @@ export class BlogComponent {
 
   @ViewChild('confirmDialog') confirmDialog!: ElementRef<HTMLDialogElement>;
   @ViewChild('updateDialog') updateDialog!: ElementRef<HTMLDialogElement>;
+
+  scrollToButtonBtn: boolean = false;
+  scrollToTopBtn: boolean = false;
   // declaring
   blogs: IBlog[] = [];
   selectBlogById: number = 0;
@@ -43,10 +47,6 @@ export class BlogComponent {
 
   ngOnInit(): void {
     this.getAllBlogs();
-  }
-
-  hello() {
-    name: String;
   }
 
   getAllBlogs(): void {
@@ -148,5 +148,22 @@ export class BlogComponent {
           alert('upating is failed' + err);
         },
       });
+  }
+
+  // scrolling function
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  scrollToBottom() {
+    window.scrollTo(0, window.document.body.scrollHeight - window.innerHeight);
+  }
+
+  @HostListener('window:scroll')
+  onWindowScroll() {
+    this.scrollToTopBtn = window.scrollY > 300;
+    this.scrollToButtonBtn =
+      window.document.body.scrollHeight - window.innerHeight - window.scrollY >
+        350 && this.scrollToTopBtn;
   }
 }
