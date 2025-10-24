@@ -1,0 +1,19 @@
+@if ( showDialog ) {
+<div
+  class="absolute top-[100px] inset-0 flex items-center justify-center bg-opacity-50 z-50"
+>
+  <div
+    class="bg-white rounded-xl shadow-xl p-6 w-80 text-center animate-fade-in"
+  >
+    <h2 class="text-lg font-semibold text-gray-800 mb-3">Login Failed</h2>
+    <p class="text-gray-600 mb-4">{{ message }}</p>
+
+    <button
+      (click)="close()"
+      class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all"
+    >
+      OK
+    </button>
+  </div>
+</div>
+}

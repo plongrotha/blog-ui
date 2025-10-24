@@ -1,0 +1,191 @@
+<div class="min-h-screen bg-gray-50 p-4 md:p-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header Section -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-2">
+        {{ getGreeting() }}, {{ userName }}! 👋
+      </h1>
+      <p class="text-gray-600 text-lg">
+        {{ currentDate | date : "fullDate" }}
+      </p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8">
+      <div
+        class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 text-center"
+      >
+        <div class="text-3xl md:text-4xl font-bold text-blue-600 mb-2">
+          {{ blogStats.totalBlogs }}
+        </div>
+        <div class="text-gray-500 text-sm uppercase tracking-wide font-medium">
+          Total Blogs
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 text-center"
+      >
+        <div class="text-3xl md:text-4xl font-bold text-green-600 mb-2">
+          {{ blogStats.publishedBlogs }}
+        </div>
+        <div class="text-gray-500 text-sm uppercase tracking-wide font-medium">
+          Published
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 text-center"
+      >
+        <div class="text-3xl md:text-4xl font-bold text-purple-600 mb-2">
+          {{ blogStats.totalViews }}
+        </div>
+        <div class="text-gray-500 text-sm uppercase tracking-wide font-medium">
+          Total Views
+        </div>
+      </div>
+
+      <div
+        class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 text-center"
+      >
+        <div class="text-3xl md:text-4xl font-bold text-orange-600 mb-2">
+          {{ blogStats.totalComments }}
+        </div>
+        <div class="text-gray-500 text-sm uppercase tracking-wide font-medium">
+          Comments
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">Quick Actions</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div
+          *ngFor="let action of quickActions"
+          [routerLink]="action.route"
+          class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 text-center cursor-pointer hover:shadow-md hover:-translate-y-1 transition-all duration-200 group"
+        >
+          <div
+            class="text-3xl mb-3 group-hover:scale-110 transition-transform duration-200"
+          >
+            {{ action.icon }}
+          </div>
+          <div class="text-gray-700 font-medium">
+            {{ action.name }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Blogs -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">Recent Blogs</h2>
+      <div
+        class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+      >
+        <!-- Desktop Table Header -->
+        <div
+          class="hidden md:grid md:grid-cols-4 gap-4 p-4 bg-gray-50 border-b border-gray-200"
+        >
+          <div class="font-semibold text-gray-700">Title</div>
+          <div class="font-semibold text-gray-700">Status</div>
+          <div class="font-semibold text-gray-700">Date</div>
+          <div class="font-semibold text-gray-700">Views</div>
+        </div>
+
+        <!-- Blog Rows -->
+        <div
+          *ngFor="let blog of recentBlogs; let last = last"
+          class="p-4 border-b border-gray-100 last:border-b-0"
+        >
+          <!-- Desktop Layout -->
+          <div class="hidden md:grid md:grid-cols-4 gap-4 items-center">
+            <div class="font-medium text-gray-800">{{ blog.title }}</div>
+            <div>
+              <span
+                class="inline-flex px-3 py-1 text-sm font-medium rounded-full"
+                [ngClass]="{
+                  'bg-green-100 text-green-800': blog.status === 'Published',
+                  'bg-yellow-100 text-yellow-800': blog.status === 'Draft'
+                }"
+              >
+                {{ blog.status }}
+              </span>
+            </div>
+            <div class="text-gray-600">
+              {{ blog.date | date : "shortDate" }}
+            </div>
+            <div class="text-gray-600">{{ blog.views }}</div>
+          </div>
+
+          <!-- Mobile Layout -->
+          <div class="md:hidden">
+            <div class="font-medium text-gray-800 mb-2">{{ blog.title }}</div>
+            <div class="flex justify-between items-center text-sm">
+              <span
+                class="inline-flex px-2 py-1 text-xs font-medium rounded-full"
+                [ngClass]="{
+                  'bg-green-100 text-green-800': blog.status === 'Published',
+                  'bg-yellow-100 text-yellow-800': blog.status === 'Draft'
+                }"
+              >
+                {{ blog.status }}
+              </span>
+              <span class="text-gray-500">{{
+                blog.date | date : "shortDate"
+              }}</span>
+              <span class="text-gray-500">{{ blog.views }} views</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity Summary -->
+    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">Activity Summary</h2>
+      <div class="space-y-4">
+        <div class="flex items-start space-x-3 p-3 rounded-lg bg-blue-50">
+          <span class="text-xl">🎉</span>
+          <p class="text-gray-700">
+            You have
+            <span class="font-semibold text-blue-600">{{
+              blogStats.draftBlogs
+            }}</span>
+            draft blogs ready to publish
+          </p>
+        </div>
+
+        <div class="flex items-start space-x-3 p-3 rounded-lg bg-green-50">
+          <span class="text-xl">📈</span>
+          <p class="text-gray-700">
+            Your blogs have been viewed
+            <span class="font-semibold text-green-600">{{
+              blogStats.totalViews
+            }}</span>
+            times this month
+          </p>
+        </div>
+
+        <div class="flex items-start space-x-3 p-3 rounded-lg bg-purple-50">
+          <span class="text-xl">💬</span>
+          <p class="text-gray-700">
+            You have
+            <span class="font-semibold text-purple-600">{{
+              blogStats.totalComments
+            }}</span>
+            comments across all posts
+          </p>
+        </div>
+
+        <div class="flex items-start space-x-3 p-3 rounded-lg bg-yellow-50">
+          <span class="text-xl">✨</span>
+          <p class="text-gray-700">
+            Keep up the great work writing amazing content!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
